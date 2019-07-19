@@ -18,10 +18,40 @@ Book Search Service
 ## Structure
 ### Table Structure
 1. 사용자 테이블   
-
+   ~~~sql
+   create table USER
+   (
+       ID                 BIGINT             not null  primary key,
+       EMAIL              VARCHAR(100)       not null  unique,
+       NAME               VARCHAR(50)        not null,
+       PASSWORD           VARCHAR(300)       not null,
+       REGISTRATION_DATE  TIMESTAMP(26, 6)   not null
+   );
+   ~~~
+   
 2. 사용자 검색어 테이블   
+   ~~~sql
+   create table USER_KEYWORD
+   (
+       ID                 BIGINT             not null  primary key,
+       KEYWORD            VARCHAR(200)       not null,
+       REGISTRATION_DATE  TIMESTAMP(26, 6)   not null,
+       USER_ID            BIGINT             not null,
+       constraint FK7VF8J5X5GRT4N6LXW8BLIGM4C foreign key (USER_ID) references USER
+   );
+   ~~~
+
 
 3. 인기 검색어 테이블   
+   ~~~sql
+   create table KEYWORD
+   (
+       ID                 BIGINT             not null  primary key,
+       COUNT              BIGINT             not null,
+       KEYWORD            VARCHAR(200)       not null,
+       REGISTRATION_DATE  TIMESTAMP(26, 6)   not null
+   );
+   ~~~
 
 
 ## Getting Started
