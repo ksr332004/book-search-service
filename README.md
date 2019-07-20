@@ -9,7 +9,6 @@ Book Search Service
     - Spring Security   
     - JPA   
     - Lombok   
-    - Junit 5   
 - Vue.js   
 - Maven   
 - H2   
