@@ -23,16 +23,28 @@ spring:
     restart:
       enabled: true
 
+hystrix:
+  command:
+    productInfo:    # command key. use 'default' for global setting.
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000  # 3000
+      circuitBreaker:
+        requestVolumeThreshold: 1   # Minimum number of request to calculate circuit breaker's health. default 20
+        errorThresholdPercentage: 50 # Error percentage to open circuit. default 50
+
 api:
   kakao:
     url: https://dapi.kakao.com
-    key: a18861c2d472d200381663d7239b9c7b
+    key: f12b3cac1ec91947b79fe537730e4c21
+  naver:
+    url: https://openapi.naver.com
+    client-id: gmaJIm_hIoSLCLyAvzdp
+    client-secret: XQ7LKJrcR0
 
 logging:
   level:
     org.springframework.web: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-
-server:
-  port: 8098
