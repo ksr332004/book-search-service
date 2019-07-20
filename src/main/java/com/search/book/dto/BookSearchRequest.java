@@ -19,8 +19,8 @@ import java.util.Arrays;
 public class BookSearchRequest {
 
     @NotNull
-    private String query;      // 검색어
-    private String sort;       // 정렬
+    private String query;              // 검색어
+    private String sort = "accuracy";  // 정렬
     @Min(1)
     @Max(100)
     private Integer page = 1;   // 현재 페이지 번호(start)

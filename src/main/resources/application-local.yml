@@ -31,8 +31,12 @@ hystrix:
           thread:
             timeoutInMilliseconds: 30000  # 3000
       circuitBreaker:
-        requestVolumeThreshold: 1   # Minimum number of request to calculate circuit breaker's health. default 20
+        requestVolumeThreshold: 5   # Minimum number of request to calculate circuit breaker's health. default 20
         errorThresholdPercentage: 50 # Error percentage to open circuit. default 50
+
+app:
+  token-key: seran.token.key
+  expires-limit: 180000        # 3 min.
 
 api:
   kakao:

@@ -1,7 +1,7 @@
 package com.search.book.controller;
 
-import com.search.book.dto.BookSearchRequest;
-import com.search.book.service.BookSearchService;
+import com.search.book.dto.UserRequest;
+import com.search.book.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,18 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@RestController
-@RequestMapping("/api/book")
 @RequiredArgsConstructor
-public class BookSearchController {
+@RestController
+@RequestMapping("/api/user")
+public class UserController {
 
-    private final BookSearchService bookSearchService;
+    private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> getBookSearch(@Valid @RequestBody BookSearchRequest request) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(bookSearchService.getKakaoBookSearchResult(request));
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRequest userRequest) {
+        userService.save(userRequest);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
 }
