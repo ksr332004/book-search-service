@@ -18,6 +18,8 @@ import java.util.Arrays;
 @AllArgsConstructor
 public class BookSearchRequest {
 
+    // TODO : 코드 리펙토링 필요
+
     @NotNull
     private String query;              // 검색어
     private String sort = "accuracy";  // 정렬

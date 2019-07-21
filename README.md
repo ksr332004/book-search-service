@@ -30,13 +30,13 @@ Book Search Service
    
 2. 사용자 검색어 테이블   
    ~~~sql
-   create table USER_KEYWORD
+   create table HISTORY
    (
        ID                 BIGINT             not null  primary key,
        KEYWORD            VARCHAR(200)       not null,
        REGISTRATION_DATE  TIMESTAMP(26, 6)   not null,
        USER_ID            BIGINT             not null,
-       constraint FK7VF8J5X5GRT4N6LXW8BLIGM4C foreign key (USER_ID) references USER
+       constraint FKN4GJYU69M6XA5F3BOT571IMBE foreign key (USER_ID) references USER
    );
    ~~~
 

@@ -17,7 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8081")
+//                .allowedOrigins("http://localhost:8081")  // TODO : API 테스트를 위해 임시 주석
                 .allowedMethods("POST", "GET", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("Authorization", "Origin", "X-Requested-With", "Content-Type", "Accept")
                 .allowCredentials(false).maxAge(3600);

@@ -39,16 +39,16 @@ public class User {
     @Column(nullable = false)
     private Set<UserRole> roles;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserKeyword> userKeywords = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<History> histories = new ArrayList<>();
 
     public enum UserRole {
         ADMIN,
         USER
     }
 
-    public void addUserKeyword(UserKeyword userKeyword) {
-        this.userKeywords.add(userKeyword);
+    public void addUserKeyword(History history) {
+        this.histories.add(history);
     }
 
 }

@@ -6,6 +6,7 @@ import com.search.book.dto.BookSearchRequest;
 import com.search.book.dto.BookSearchResponse;
 import com.search.book.dto.KakaoBookResponse;
 import com.search.book.dto.NaverBookResponse;
+import com.search.book.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,10 +34,11 @@ public class BookSearchService {
     @Value("${api.naver.client-secret}")
     private String NAVER_CLIENT_SECRET;
 
+    // TODO : Feign으로 변환하기
     private final RestTemplate restTemplate;
 
     @HystrixCommand(commandKey="getKakaoBookSearchResult", fallbackMethod = "getNaverBookSearchResult")
-    public ResponseEntity<BookSearchResponse> getKakaoBookSearchResult(BookSearchRequest request) {
+    public ResponseEntity<BookSearchResponse> getKakaoBookSearchResult(UserPrincipal currentUser, BookSearchRequest request) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         httpHeaders.add("Authorization", "KakaoAK " + KAKAO_API_KEY);
@@ -46,6 +48,8 @@ public class BookSearchService {
                                                             , new HttpEntity<>(httpHeaders)
                                                             , KakaoBookResponse.class).getBody();
 
+        // TODO : 카카오 API 응답값에 따른 예외 처리
+
         if (Objects.isNull(response)) {
             return ResponseEntity.noContent().build();
         }
@@ -53,8 +57,8 @@ public class BookSearchService {
         return ResponseEntity.ok(BookSearchResponse.kakaoBookResponseMapper(response, request));
     }
 
-    public ResponseEntity<BookSearchResponse> getNaverBookSearchResult(BookSearchRequest request, Throwable t) {
-        log.error("fallback method !!!  getKakaoBookSearchResult", t);
+    public ResponseEntity<BookSearchResponse> getNaverBookSearchResult(UserPrincipal currentUser, BookSearchRequest request, Throwable t) {
+        log.error("fallback method call !!! getKakaoBookSearchResult", t);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -65,6 +69,8 @@ public class BookSearchService {
                                                             , HttpMethod.GET
                                                             , new HttpEntity<>(httpHeaders)
                                                             , NaverBookResponse.class).getBody();
+
+        // TODO : 네이버 API 응답값에 따른 예외 처리
 
         if (Objects.isNull(response)) {
             return ResponseEntity.noContent().build();

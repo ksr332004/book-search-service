@@ -25,9 +25,7 @@ public class Document {
     private Integer salePrice;
     private String thumbnail;
     private String status;
-    @JsonProperty("authors")
     private List<String> authors = new ArrayList<>();
-    @JsonProperty("translators")
     private List<String> translators = new ArrayList<>();
 
     public String getAuthorString() {

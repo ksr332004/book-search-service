@@ -64,8 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll() // TODO : 개발을 위해 임시 사용
-//                .antMatchers("/api/auth").permitAll()
+                .antMatchers("/api/auth").permitAll()
+                .antMatchers("/api/user").permitAll()
                 .anyRequest().authenticated();
 
         // Add our custom JWT security filter
