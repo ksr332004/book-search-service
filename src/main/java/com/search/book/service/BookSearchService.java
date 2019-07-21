@@ -1,12 +1,10 @@
 package com.search.book.service;
 
-
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.search.book.dto.BookSearchRequest;
 import com.search.book.dto.BookSearchResponse;
 import com.search.book.dto.KakaoBookResponse;
 import com.search.book.dto.NaverBookResponse;
-import com.search.book.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,7 +36,7 @@ public class BookSearchService {
     private final RestTemplate restTemplate;
 
     @HystrixCommand(commandKey="getKakaoBookSearchResult", fallbackMethod = "getNaverBookSearchResult")
-    public ResponseEntity<BookSearchResponse> getKakaoBookSearchResult(UserPrincipal currentUser, BookSearchRequest request) {
+    public ResponseEntity<BookSearchResponse> getKakaoBookSearchResult(BookSearchRequest request) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         httpHeaders.add("Authorization", "KakaoAK " + KAKAO_API_KEY);
@@ -57,8 +55,8 @@ public class BookSearchService {
         return ResponseEntity.ok(BookSearchResponse.kakaoBookResponseMapper(response, request));
     }
 
-    public ResponseEntity<BookSearchResponse> getNaverBookSearchResult(UserPrincipal currentUser, BookSearchRequest request, Throwable t) {
-        log.error("fallback method call !!! getKakaoBookSearchResult", t);
+    public ResponseEntity<BookSearchResponse> getNaverBookSearchResult(BookSearchRequest request, Throwable t) {
+        log.error("fallback method call !!! getKakaoBookSearchResult", t.getMessage());
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

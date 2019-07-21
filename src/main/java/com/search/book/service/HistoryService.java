@@ -3,14 +3,18 @@ package com.search.book.service;
 import com.search.book.entity.History;
 import com.search.book.entity.User;
 import com.search.book.exception.ResourceNotFoundException;
+import com.search.book.model.Keyword;
 import com.search.book.repository.HistoryRepository;
 import com.search.book.repository.UserRepository;
 import com.search.book.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,32 +26,24 @@ public class HistoryService {
     private final HistoryRepository historyRepository;
 
     @Async
+    @Transactional
     public void saveUserHistory(UserPrincipal currentUser, String query) {
-        // 사용자 검색어 저장
         userRepository.findById(currentUser.getId()).map(
-                u -> {
-                    History history = historyRepository.findByUserAndKeyword(u, query);
-                    Optional.ofNullable(history).map(
-                            k -> {
-                                history.setKeyword(query);
-                                history.setUser(u);
-                                history.setRegistrationDate(LocalDateTime.now());
-                                return historyRepository.save(history);
-                            }
-                    ).orElseGet( () -> historyRepository.save(History.builder().keyword(query).user(u).build()) );
-                    return u;
-                }
-        ).orElseThrow( () -> new ResourceNotFoundException("user", "User", "Object") );
+                u -> historyRepository.save(History.builder().keyword(query).userId(u.getId()).build())
+        ).orElseThrow( () -> new ResourceNotFoundException("user", "User", null) );
     }
 
-    // TODO : 페이징 처리 하기
-    public List<History> getUserKeywordHistory(UserPrincipal currentUser) {
+    public Page<History> getUserKeywordHistory(UserPrincipal currentUser, Pageable pageable) {
         Optional<User> user = userRepository.findById(currentUser.getId());
         if (!user.isPresent()) {
-            throw new ResourceNotFoundException("user", "User", "Object");
+            throw new ResourceNotFoundException("user", "User", null);
         }
 
-        return historyRepository.findAllByUserOrderByRegistrationDateDesc(user.get());
+        return historyRepository.findAllByUserIdOrderByRegistrationDateDesc(pageable, user.get().getId());
+    }
+
+    public List<Keyword> getKeywordRank() {
+        return historyRepository.findKeyword10Rank(PageRequest.of(0, 10)).getContent();
     }
 
 }

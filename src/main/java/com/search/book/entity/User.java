@@ -19,7 +19,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 100, nullable = false, unique = true)
@@ -39,16 +39,13 @@ public class User {
     @Column(nullable = false)
     private Set<UserRole> roles;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<History> histories = new ArrayList<>();
 
     public enum UserRole {
         ADMIN,
         USER
-    }
-
-    public void addUserKeyword(History history) {
-        this.histories.add(history);
     }
 
 }

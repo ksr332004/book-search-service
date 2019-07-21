@@ -15,8 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class BookSearchResponse {
 
-    private Integer totalCount;      // 검색된 전체 문서 수
-    private Integer pageSize;        // 검색된 전체 문서 수 / 한 페이지에 보여질 문서의 개수
+    private Integer totalElements;   // 검색된 전체 문서 수
+    private Integer totalPages;      // 검색된 전체 문서 수 / 한 페이지에 보여질 문서의 개수
     private Integer size;            // 한 페이지에 보여질 문서의 개수
     private Integer currentPage;     // 현재 페이지 번호
     private String apiName;          // API 구분
@@ -25,8 +25,8 @@ public class BookSearchResponse {
 
     public static BookSearchResponse kakaoBookResponseMapper(KakaoBookResponse kakaoBookResponse, BookSearchRequest request) {
         BookSearchResponse response = new BookSearchResponse();
-        response.setTotalCount( kakaoBookResponse.getMeta().getPageableCount() );
-        response.setPageSize( (int) Math.ceil((double)kakaoBookResponse.getMeta().getPageableCount() / request.getSize()) );
+        response.setTotalElements( kakaoBookResponse.getMeta().getPageableCount() );
+        response.setTotalPages( (int) Math.ceil((double)kakaoBookResponse.getMeta().getPageableCount() / request.getSize()) );
         response.setSize( request.getSize() );
         response.setCurrentPage( request.getPage() );
         response.setApiName("KAKAO");
@@ -56,8 +56,8 @@ public class BookSearchResponse {
 
     public static BookSearchResponse naverResponseMapper(NaverBookResponse naverBookResponse) {
         BookSearchResponse response = new BookSearchResponse();
-        response.setTotalCount( naverBookResponse.getTotal() );
-        response.setPageSize( (int) Math.ceil((double)naverBookResponse.getTotal() / naverBookResponse.getDisplay()) );
+        response.setTotalElements( naverBookResponse.getTotal() );
+        response.setSize( (int) Math.ceil((double)naverBookResponse.getTotal() / naverBookResponse.getDisplay()) );
         response.setSize( naverBookResponse.getDisplay() );
         response.setCurrentPage( naverBookResponse.getStart() );
         response.setApiName("NAVER");

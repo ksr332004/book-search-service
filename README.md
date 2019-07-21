@@ -41,18 +41,6 @@ Book Search Service
    ~~~
 
 
-3. 인기 검색어 테이블   
-   ~~~sql
-   create table KEYWORD
-   (
-       ID                 BIGINT             not null  primary key,
-       COUNT              BIGINT             not null,
-       KEYWORD            VARCHAR(200)       not null,
-       REGISTRATION_DATE  TIMESTAMP(26, 6)   not null
-   );
-   ~~~
-
-
 ## Getting Started
 ### Frontend   
 - Project setup
@@ -71,9 +59,13 @@ Book Search Service
    ~~~
 
 ### Backend
-- Compile and package
+- Compile
    ~~~bash
+   mvn clean
    mvn compile
+   ~~~
+- Package
+   ~~~bash
    mvn package
    ~~~
 - Starting

@@ -18,8 +18,6 @@ import java.util.Arrays;
 @AllArgsConstructor
 public class BookSearchRequest {
 
-    // TODO : 코드 리펙토링 필요
-
     @NotNull
     private String query;              // 검색어
     private String sort = "accuracy";  // 정렬
@@ -42,8 +40,8 @@ public class BookSearchRequest {
         public static SortGroup findBySortGroup(String uri) {
             return Arrays.stream(SortGroup.values())
                     .filter( s -> s.sort.equals(uri) )
-                    .findAny()
-                    .orElse(null);
+                    .findFirst()
+                    .orElse(SortGroup.sim);
         }
     }
 
@@ -60,8 +58,8 @@ public class BookSearchRequest {
         public static TargetGroup findByTargetGroup(String uri) {
             return Arrays.stream(TargetGroup.values())
                     .filter( t -> t.target.equals(uri) )
-                    .findAny()
-                    .orElse(null);
+                    .findFirst()
+                    .orElse(TargetGroup.d_titl);
         }
     }
 

@@ -16,12 +16,11 @@ import java.time.LocalDateTime;
 public class History {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(length = 200, nullable = false)
     private String keyword;
@@ -29,13 +28,5 @@ public class History {
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime registrationDate;
-
-    public void setUser(User user) {
-        if (this.user != null) {
-            this.user.getHistories().remove(this);
-        }
-        this.user = user;
-        this.user.addUserKeyword(this);
-    }
 
 }
