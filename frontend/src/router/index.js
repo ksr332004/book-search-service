@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
+import Signup from '../components/Signup.vue'
 import Home from '../components/Home.vue'
+import History from '../components/History.vue'
+import Keyword from '../components/Keyword.vue'
 import NotFound from '../components/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -19,10 +22,24 @@ const router = new VueRouter({
       path: '/login', 
       component: Login 
     },
+    {
+      path: '/signup',
+      component: Signup
+    },
     { 
       path: '/', 
       component: Home,
-      beforeEnter: requireAuth
+      // beforeEnter: requireAuth
+    },
+    {
+      path: '/history',
+      component: History,
+      // beforeEnter: requireAuth
+    },
+    {
+      path: '/keyword',
+      component: Keyword,
+      // beforeEnter: requireAuth
     },
     { 
       path: '*', 

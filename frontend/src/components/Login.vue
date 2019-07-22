@@ -1,22 +1,33 @@
 <template>
-  <div class="login">
-    <h2>Log in to Book Search Project</h2>
-    <form @submit.prevent="onSubmit">
-      <div>
-        <label for="email">Email</label>
-        <input class="form-control" type="text" name="email" 
-          v-model="email" autofocus placeholder="이메일" />
-      </div>
-      <div>
-        <label for="password">Passwrod</label>
-        <input class="form-control" type="password" 
-          v-model="password" />
-      </div>
-      <button  class="btn" :class="{'btn-success': !invalidForm}" type="submit" 
-        :disabled="invalidForm">Log In</button>
-    </form>
-    <p class="error" v-if="error">{{error}}</p>
-  </div>
+  <b-container>
+    
+    <b-row align-h="center">
+      <b-col cols="6">
+        <b-form @submit="onSubmit">
+          <b-form-group label="Email" label-for="email">
+            <b-form-input id="email" v-model="email" required placeholder="이메일"></b-form-input>
+          </b-form-group>
+          <b-form-group label="Password" label-for="password">
+            <b-form-input id="password" v-model="password" required placeholder="비밀번호"></b-form-input>
+          </b-form-group>
+          <b-button type="submit" :disabled="invalidForm" block variant="primary">Log In</b-button>
+        </b-form>
+      </b-col>
+    </b-row>
+
+    <b-row align-h="center">
+      <b-col cols="6">
+        <p v-if="error">{{error}}</p>
+      </b-col>
+    </b-row>
+
+    <b-row align-h="center">
+      <b-col cols="6">
+        <b-button to="/signup" block variant="outline-primary">Sign up</b-button>
+      </b-col>
+    </b-row>
+
+  </b-container>
 </template>
 
 <script>
@@ -53,13 +64,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.login {
-  width: 400px;
-  margin: 0 auto; 
-}
-.error {
-  color: #f00;
-}
-</style>

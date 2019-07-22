@@ -7,11 +7,10 @@
 
       <b-navbar-nav>
         <b-nav-item to="/">Home</b-nav-item>
-        <b-nav-item href="/">History</b-nav-item>
-        <b-nav-item href="/">Keyword Rank</b-nav-item>
+        <b-nav-item to="/history">History</b-nav-item>
+        <b-nav-item to="/keyword">Keyword Rank</b-nav-item>
       </b-navbar-nav>
 
-      <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <b-nav-item href="" v-if="isAuth" @click.prevent="logout">Logout</b-nav-item>
         <b-nav-item v-else to="/login">Login</b-nav-item>

@@ -29,6 +29,6 @@ if (token) setAuthInHeader(token)
 
 export const auth = {
   login(email, password) {
-    return request('post', '/login', {email, password}) 
+    return request('post', '/api/auth', {email, password}) 
   }
 }

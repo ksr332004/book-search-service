@@ -14,3 +14,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.row {
+  margin-top: 20px
+}
+</style>
