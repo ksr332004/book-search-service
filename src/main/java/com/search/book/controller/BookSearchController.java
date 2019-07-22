@@ -30,7 +30,7 @@ public class BookSearchController {
     public ResponseEntity<?> getBookSearch(@CurrentUser UserPrincipal currentUser, @Valid @RequestBody BookSearchRequest request) {
         BookSearchResponse response = bookSearchService.getKakaoBookSearchResult(request).getBody();
 
-        if (Objects.requireNonNull(response).getTotalElements() > 0) {
+        if (request.getButtonEvent() && Objects.requireNonNull(response).getTotalElements() > 0) {
             historyService.saveUserHistory(currentUser, request.getQuery());
         }
 

@@ -53,11 +53,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
-            .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-            .and()
+//            .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//            .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
+            .antMatchers("/**", "OPTIONS").permitAll()
             .antMatchers("/api/auth").permitAll()
             .antMatchers("/api/user").permitAll()
             .anyRequest().authenticated();

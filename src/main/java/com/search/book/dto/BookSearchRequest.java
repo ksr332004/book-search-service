@@ -23,12 +23,13 @@ public class BookSearchRequest {
     private String sort = "accuracy";  // 정렬
     @Min(1)
     @Max(100)
-    private Integer page = 1;   // 현재 페이지 번호(start)
+    private Integer page = 1;          // 현재 페이지 번호(start)
     @Min(10)
     @Max(50)
     @Builder.Default
-    private Integer size = 10;  // 보여지는 문서의 개수(display)
-    private String target;      // 검색 필드
+    private Integer size = 10;         // 보여지는 문서의 개수(display)
+    private String target;             // 검색 필드
+    private Boolean buttonEvent;       // 검색 버튼에 의한 이벤트 인지 체크
 
     @Getter
     @AllArgsConstructor
