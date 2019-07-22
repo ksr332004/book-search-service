@@ -39,6 +39,7 @@ public class User {
     @Column(nullable = false)
     private Set<UserRole> roles;
 
+    @Builder.Default
     @JoinColumn(name = "user_id")
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<History> histories = new ArrayList<>();

@@ -26,6 +26,7 @@ public class BookSearchRequest {
     private Integer page = 1;   // 현재 페이지 번호(start)
     @Min(10)
     @Max(50)
+    @Builder.Default
     private Integer size = 10;  // 보여지는 문서의 개수(display)
     private String target;      // 검색 필드
 

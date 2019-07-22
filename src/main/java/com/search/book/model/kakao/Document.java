@@ -1,6 +1,5 @@
 package com.search.book.model.kakao;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
@@ -25,7 +24,9 @@ public class Document {
     private Integer salePrice;
     private String thumbnail;
     private String status;
+    @Builder.Default
     private List<String> authors = new ArrayList<>();
+    @Builder.Default
     private List<String> translators = new ArrayList<>();
 
     public String getAuthorString() {

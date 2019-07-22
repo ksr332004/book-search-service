@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/search/keyword")
 @RequiredArgsConstructor
-public class KeywordSearchController {
+public class HistoryController {
 
     private final HistoryService historyService;
 
     @GetMapping
-    public ResponseEntity<?> getKeywordSearch() {
+    public ResponseEntity<?> getKeywordRankSearch() {
         return ResponseEntity.ok().body(historyService.getKeywordRank());
     }
 
     @GetMapping("/user")
-    public ResponseEntity<?> getUserKeywordSearch(@CurrentUser UserPrincipal currentUser, Pageable pageable) {
-        return ResponseEntity.ok().body(historyService.getUserKeywordHistory(currentUser, pageable));
+    public ResponseEntity<?> getUserHistorySearch(@CurrentUser UserPrincipal currentUser, Pageable pageable) {
+        return ResponseEntity.ok().body(historyService.getUserHistory(currentUser, pageable));
     }
 
 }

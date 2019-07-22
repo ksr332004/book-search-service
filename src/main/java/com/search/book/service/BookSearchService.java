@@ -37,13 +37,9 @@ public class BookSearchService {
 
     @HystrixCommand(commandKey="getKakaoBookSearchResult", fallbackMethod = "getNaverBookSearchResult")
     public ResponseEntity<BookSearchResponse> getKakaoBookSearchResult(BookSearchRequest request) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        httpHeaders.add("Authorization", "KakaoAK " + KAKAO_API_KEY);
-
         KakaoBookResponse response = restTemplate.exchange(request.getKakaoUrl(KAKAO_API_URL + "/v3/search/book")
                                                             , HttpMethod.GET
-                                                            , new HttpEntity<>(httpHeaders)
+                                                            , new HttpEntity<>(getHeaders(SearchType.KAKAO))
                                                             , KakaoBookResponse.class).getBody();
 
         // TODO : 카카오 API 응답값에 따른 예외 처리
@@ -56,16 +52,11 @@ public class BookSearchService {
     }
 
     public ResponseEntity<BookSearchResponse> getNaverBookSearchResult(BookSearchRequest request, Throwable t) {
-        log.error("fallback method call !!! getKakaoBookSearchResult", t.getMessage());
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        httpHeaders.add("X-Naver-Client-Id", NAVER_CLIENT_ID);
-        httpHeaders.add("X-Naver-Client-Secret", NAVER_CLIENT_SECRET);
+        log.error("fallback method call !!! getKakaoBookSearchResult {}", t.getMessage());
 
         NaverBookResponse response = restTemplate.exchange(request.getNaverUrl(NAVER_API_URL + "/v1/search/book.json")
                                                             , HttpMethod.GET
-                                                            , new HttpEntity<>(httpHeaders)
+                                                            , new HttpEntity<>(getHeaders(SearchType.NAVER))
                                                             , NaverBookResponse.class).getBody();
 
         // TODO : 네이버 API 응답값에 따른 예외 처리
@@ -75,6 +66,23 @@ public class BookSearchService {
         }
 
         return ResponseEntity.ok(BookSearchResponse.naverResponseMapper(response));
+    }
+
+    private HttpHeaders getHeaders(SearchType searchType) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        if (searchType.equals(SearchType.KAKAO)) {
+            httpHeaders.add("Authorization", "KakaoAK " + KAKAO_API_KEY);
+        } else {
+            httpHeaders.add("X-Naver-Client-Id", NAVER_CLIENT_ID);
+            httpHeaders.add("X-Naver-Client-Secret", NAVER_CLIENT_SECRET);
+        }
+        return httpHeaders;
+    }
+
+    private enum SearchType {
+        KAKAO,
+        NAVER
     }
 
 }
