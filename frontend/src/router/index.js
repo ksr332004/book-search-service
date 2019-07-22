@@ -29,17 +29,22 @@ const router = new VueRouter({
     { 
       path: '/', 
       component: Home,
-      // beforeEnter: requireAuth
+      beforeEnter: requireAuth
+    },
+    {
+      path: '/book',
+      component: Home,
+      beforeEnter: requireAuth
     },
     {
       path: '/history',
       component: History,
-      // beforeEnter: requireAuth
+      beforeEnter: requireAuth
     },
     {
       path: '/keyword',
       component: Keyword,
-      // beforeEnter: requireAuth
+      beforeEnter: requireAuth
     },
     { 
       path: '*', 

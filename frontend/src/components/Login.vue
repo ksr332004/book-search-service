@@ -3,12 +3,12 @@
     
     <b-row align-h="center">
       <b-col cols="6">
-        <b-form @submit="onSubmit">
+        <b-form @submit.prevent="onSubmit">
           <b-form-group label="Email" label-for="email">
             <b-form-input id="email" v-model="email" required placeholder="이메일"></b-form-input>
           </b-form-group>
           <b-form-group label="Password" label-for="password">
-            <b-form-input id="password" v-model="password" required placeholder="비밀번호"></b-form-input>
+            <b-form-input type="password" id="password" v-model="password" required placeholder="비밀번호"></b-form-input>
           </b-form-group>
           <b-button type="submit" :disabled="invalidForm" block variant="primary">Log In</b-button>
         </b-form>
