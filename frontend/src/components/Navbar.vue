@@ -1,13 +1,25 @@
 <template>
-  <nav class="header">
-    <div class="header-logo">
-      <router-link to="/">Home</router-link>
-    </div>
-    <div class="header-auth">
-      <a href="" v-if="isAuth" @click.prevent="logout">Logout</a>
-      <router-link v-else to="/login">Login</router-link>
-    </div>
-  </nav>
+  <b-navbar toggleable="lg" type="dark" variant="info">
+
+    <b-navbar-brand>Book Search Service</b-navbar-brand>
+
+    <b-collapse id="nav-collapse" is-nav>
+
+      <b-navbar-nav>
+        <b-nav-item to="/">Home</b-nav-item>
+        <b-nav-item href="/">History</b-nav-item>
+        <b-nav-item href="/">Keyword Rank</b-nav-item>
+      </b-navbar-nav>
+
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item href="" v-if="isAuth" @click.prevent="logout">Logout</b-nav-item>
+        <b-nav-item v-else to="/login">Login</b-nav-item>
+      </b-navbar-nav>
+
+    </b-collapse>
+
+  </b-navbar>
 </template>
 
 <script>
@@ -27,48 +39,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.header {
-  flex: none;
-  background-color: rgba(0,0,0,.15);
-  height: 32px;
-  padding: 4px;
-}
-.header a {
-  display: block;
-  height: 30px;
-  line-height: 30px;
-  text-decoration: none;
-  color: rgba(255,255,255,.5);
-}
-.header-logo {
-  position: absolute;
-  left: 50%;
-  top: 7px;
-  margin-left: -30px;
-  text-align: center;
-  font-weight: bolder;
-  font-size: 24px;
-}
-.header-logo a:hover,
-.header-logo a:focus {
-  color: rgba(255,255,255,.9);
-}
-.header-auth {
-  position: absolute;
-  right: 15px;
-  top: 5px;
-}
-.header-auth a {
-  border-radius: 2px;
-  padding: 0 10px;
-  background-color: rgba(255,255,255, .5);
-  color: white;
-  transition: all .3s;
-}
-.header-auth a:hover,
-.header-auth a:focus {
-  background-color: rgba(255,255,255, .3);
-}
-</style>
