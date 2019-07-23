@@ -20,9 +20,9 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRequest userRequest) {
+    public ResponseEntity<Void> registerUser(@Valid @RequestBody UserRequest userRequest) {
         userService.save(userRequest);
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
 }

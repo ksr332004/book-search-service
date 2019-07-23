@@ -4,6 +4,7 @@ import com.search.book.dto.AuthRequest;
 import com.search.book.dto.AuthResponse;
 import com.search.book.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +26,7 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping
-    public ResponseEntity<?> authorize(@Valid @RequestBody AuthRequest authRequest) {
+    public ResponseEntity<AuthResponse> authorize(@Valid @RequestBody AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authRequest.getEmail(),
@@ -36,7 +37,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtTokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new AuthResponse(jwt));
+        return ResponseEntity.status(HttpStatus.OK).body(new AuthResponse(jwt));
     }
 
     // TODO : 토큰 갱신 추가

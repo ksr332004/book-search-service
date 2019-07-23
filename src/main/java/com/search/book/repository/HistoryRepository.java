@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HistoryRepository extends JpaRepository<History, Long> {
-    Page<History> findAllByUserIdOrderByRegistrationDateDesc(Pageable pageable, Long userId);
+    Page<History> findAllByUserId(Pageable pageable, Long userId);
 
     @Query(value = "SELECT new com.search.book.model.Keyword(h.keyword, count(h))"
                 + " FROM History h"

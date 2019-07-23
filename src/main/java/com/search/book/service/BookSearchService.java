@@ -35,12 +35,12 @@ public class BookSearchService {
     // TODO : Feign으로 변환하기
     private final RestTemplate restTemplate;
 
-    @HystrixCommand(commandKey="getKakaoBookSearchResult", fallbackMethod = "getNaverBookSearchResult")
+    @HystrixCommand(commandKey = "getKakaoBookSearchResult", fallbackMethod = "getNaverBookSearchResult")
     public ResponseEntity<BookSearchResponse> getKakaoBookSearchResult(BookSearchRequest request) {
         KakaoBookResponse response = restTemplate.exchange(request.getKakaoUrl(KAKAO_API_URL + "/v3/search/book")
-                                                            , HttpMethod.GET
-                                                            , new HttpEntity<>(getHeaders(SearchType.KAKAO))
-                                                            , KakaoBookResponse.class).getBody();
+                , HttpMethod.GET
+                , new HttpEntity<>(getHeaders(SearchType.KAKAO))
+                , KakaoBookResponse.class).getBody();
 
         // TODO : 카카오 API 응답값에 따른 예외 처리
 
@@ -55,9 +55,9 @@ public class BookSearchService {
         log.error("fallback method call !!! getKakaoBookSearchResult {}", t.getMessage());
 
         NaverBookResponse response = restTemplate.exchange(request.getNaverUrl(NAVER_API_URL + "/v1/search/book.json")
-                                                            , HttpMethod.GET
-                                                            , new HttpEntity<>(getHeaders(SearchType.NAVER))
-                                                            , NaverBookResponse.class).getBody();
+                , HttpMethod.GET
+                , new HttpEntity<>(getHeaders(SearchType.NAVER))
+                , NaverBookResponse.class).getBody();
 
         // TODO : 네이버 API 응답값에 따른 예외 처리
 
