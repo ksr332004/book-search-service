@@ -29,7 +29,7 @@ public class BookSearchRequest {
     @Builder.Default
     private Integer size = 10;         // 보여지는 문서의 개수(display)
     private String target;             // 검색 필드
-    private Boolean buttonEvent;       // 검색 버튼에 의한 이벤트 인지 체크
+    private Boolean isButtonEvent;       // 검색 버튼에 의한 이벤트 인지 체크
 
     @Getter
     @AllArgsConstructor

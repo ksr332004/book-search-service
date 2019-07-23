@@ -19,17 +19,17 @@ public class BookSearchResponse {
     private Integer totalPages;      // 검색된 전체 문서 수 / 한 페이지에 보여질 문서의 개수
     private Integer size;            // 한 페이지에 보여질 문서의 개수
     private Integer currentPage;     // 현재 페이지 번호
-    private Boolean first;           // 이전 페이지 여부
-    private Boolean last;            // 다음 페이지 여부
+    private Boolean isFirst;         // 이전 페이지 여부
+    private Boolean isLast;          // 다음 페이지 여부
     private String apiName;          // API 구분
 
     private List<Book> books = new ArrayList<>();
 
-    private Boolean getFirst() {
+    private Boolean getIsFirst() {
         return currentPage > 1 && totalElements != 0 && totalElements > size;
     }
 
-    private Boolean getLast() {
+    private Boolean getIsLast() {
         return !currentPage.equals(totalPages) && totalElements > size;
     }
 
@@ -39,8 +39,8 @@ public class BookSearchResponse {
         response.setTotalPages( (int) Math.ceil((double)kakaoBookResponse.getMeta().getPageableCount() / request.getSize()) );
         response.setSize( request.getSize() );
         response.setCurrentPage( request.getPage() );
-        response.setFirst(response.getFirst());
-        response.setLast(response.getLast());
+        response.setIsFirst(response.getIsFirst());
+        response.setIsLast(response.getIsLast());
         response.setApiName("KAKAO");
 
         List<Book> bookList = new ArrayList<>();
@@ -69,11 +69,11 @@ public class BookSearchResponse {
     public static BookSearchResponse naverResponseMapper(NaverBookResponse naverBookResponse) {
         BookSearchResponse response = new BookSearchResponse();
         response.setTotalElements( naverBookResponse.getTotal() );
-        response.setSize( (int) Math.ceil((double)naverBookResponse.getTotal() / naverBookResponse.getDisplay()) );
+        response.setTotalPages( (int) Math.ceil((double)naverBookResponse.getTotal() / naverBookResponse.getDisplay()) );
         response.setSize( naverBookResponse.getDisplay() );
         response.setCurrentPage( naverBookResponse.getStart() );
-        response.setFirst(response.getFirst());
-        response.setLast(response.getLast());
+        response.setIsFirst(response.getIsFirst());
+        response.setIsLast(response.getIsLast());
         response.setApiName("NAVER");
 
         List<Book> bookList = new ArrayList<>();
