@@ -7,19 +7,18 @@ const onUnauthorized = () => {
   router.push(`/login?rPath=${encodeURIComponent(location.pathname)}`)
 }
 
-const request = (method, url, data) => {
-  console.log(axios.defaults.headers.common['Authorization']);
-
-  return axios({
-    method,
-    url: DOMAIN + url,
-    data
-  }).then(result => result.data)
-    .catch(result => {
-      const {status} = result.response
-      if (status === UNAUTHORIZED) onUnauthorized()
-      throw result.response
-    })
+const request = {
+  get(path, data) {
+    return axios.get(`${DOMAIN + path}`, { params: data })
+      .catch(({ response }) => {
+        const { status } = response
+        if (status === UNAUTHORIZED) return onUnauthorized()
+        throw Error(response)
+      })
+  },
+  post(path, data) {
+    return axios.post(`${DOMAIN + path}`, data)
+  }
 }
 
 export const setAuthInHeader = token => {
@@ -31,27 +30,28 @@ if (token) setAuthInHeader(token)
 
 export const auth = {
   login(email, password) {
-    return request('post', '/api/auth', { email, password }) 
+    return request.post('/api/auth', { email, password }).then(({ data }) => data)
   },
   signup(email, name, password) {
-    return request('post', '/api/user', { email, name, password })
+    return request.post('/api/user', { email, name, password }).then(({ data }) => data)
   }
 }
 
 export const book = {
-  search(target, query, page, buttonEvent) {
-    return request('post', '/api/search/book', { target, query, page, buttonEvent })
+  search(target, query, page, isButtonEvent) {
+    return request.post('/api/search/book', { target, query, page, isButtonEvent }).then(({ data }) => data)
   }
 }
 
 export const history = {
-  search() {
-    return request('get', '/api/search/keyword/user', { })
+  search(page) {
+    return request.get('/api/search/keyword/user', page).then(({ data }) => data)
+    
   }
 }
 
 export const keyword = {
   search() {
-    return request('get', '/api/search/keyword', { })
+    return request.get('/api/search/keyword', {}).then(({ data }) => data)
   }
 }

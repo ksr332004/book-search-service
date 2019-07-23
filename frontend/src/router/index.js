@@ -32,11 +32,6 @@ const router = new VueRouter({
       beforeEnter: requireAuth
     },
     {
-      path: '/book',
-      component: Home,
-      beforeEnter: requireAuth
-    },
-    {
       path: '/history',
       component: History,
       beforeEnter: requireAuth

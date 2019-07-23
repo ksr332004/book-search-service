@@ -3,7 +3,7 @@
 
     <b-row align-h="center">
       <b-col cols="11">
-        <b-list-group v-if="keywordList > 0">
+        <b-list-group v-if="keywordList.length > 0">
           <b-list-group-item class="d-flex justify-content-between align-items-center" v-for="(keyword, i) in keywordList" :key="i">
             {{ keyword.keyword }}
             <b-badge variant="primary" pill>{{ keyword.count }}</b-badge>
@@ -36,7 +36,6 @@ export default {
       keyword.search()
         .then(data => {
           this.keywordList = data
-          console.log(this.keywordList);
         })
         .catch(err => {
           this.error = err.data.error
