@@ -41,7 +41,7 @@ public class BookSearchRequest {
 
         public static SortGroup findBySortGroup(String uri) {
             return Arrays.stream(SortGroup.values())
-                    .filter( s -> s.sort.equals(uri) )
+                    .filter(s -> s.sort.equals(uri))
                     .findFirst()
                     .orElse(SortGroup.sim);
         }
@@ -59,7 +59,7 @@ public class BookSearchRequest {
 
         public static TargetGroup findByTargetGroup(String uri) {
             return Arrays.stream(TargetGroup.values())
-                    .filter( t -> t.target.equals(uri) )
+                    .filter(t -> t.target.equals(uri))
                     .findFirst()
                     .orElse(TargetGroup.d_titl);
         }
@@ -89,7 +89,7 @@ public class BookSearchRequest {
     public String getNaverUrl(String url) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
 
-        if (this.target == null) {
+        if (!StringUtils.hasText(this.target)) {
             builder.queryParam("query", this.query);
         } else {
             builder.queryParam(TargetGroup.findByTargetGroup(this.target).toString(), this.query);

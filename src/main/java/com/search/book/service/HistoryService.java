@@ -28,13 +28,13 @@ public class HistoryService {
     public void saveUserHistory(UserPrincipal currentUser, String query) {
         userRepository.findById(currentUser.getId()).map(
                 u -> historyRepository.save(History.builder().keyword(query).userId(u.getId()).build())
-        ).orElseThrow( () -> new BadCredentialsException("사용자 정보가 없습니다.") );
+        ).orElseThrow(() -> new BadCredentialsException("사용자 정보가 없습니다."));
     }
 
     public Page<History> getUserHistory(UserPrincipal currentUser, Pageable pageable) {
         return userRepository.findById(currentUser.getId()).map(
-                u -> historyRepository.findAllByUserIdOrderByRegistrationDateDesc(pageable, u.getId())
-        ).orElseThrow( () -> new BadCredentialsException("사용자 정보가 없습니다.") );
+                u -> historyRepository.findAllByUserId(pageable, u.getId())
+        ).orElseThrow(() -> new BadCredentialsException("사용자 정보가 없습니다."));
     }
 
     public List<Keyword> getKeywordRank() {

@@ -39,8 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-            .userDetailsService(userDetailsServiceImpl)
-            .passwordEncoder(passwordEncoder());
+                .userDetailsService(userDetailsServiceImpl)
+                .passwordEncoder(passwordEncoder());
     }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
@@ -52,31 +52,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-//            .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//            .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-            .antMatchers("/**", "OPTIONS").permitAll()
-            .antMatchers("/api/auth").permitAll()
-            .antMatchers("/api/user").permitAll()
-            .anyRequest().authenticated();
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/**", "OPTIONS").permitAll()
+                .antMatchers("/api/auth").permitAll()
+                .antMatchers("/api/user").permitAll()
+                .anyRequest().authenticated();
 
         // Add our custom JWT security filter
         http
-            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // H2 access option
         http
-            .headers().frameOptions().sameOrigin();
+                .headers().frameOptions().sameOrigin();
     }
 
     @Override
     public void configure(WebSecurity web) {
         web
-            .ignoring()
-            .antMatchers("/resources/**");
+                .ignoring()
+                .antMatchers("/resources/**");
     }
 
 }
