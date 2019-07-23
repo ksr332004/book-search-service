@@ -12,6 +12,7 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
+        <!-- TODO : Login/out 으로 안바뀜 확인 필요 -->
         <b-nav-item href="" v-if="isAuth" @click.prevent="logout">Logout</b-nav-item>
         <b-nav-item v-else to="/login">Login</b-nav-item>
       </b-navbar-nav>
