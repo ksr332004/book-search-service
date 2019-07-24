@@ -9,6 +9,8 @@ Book Search Service
     - Spring Security   
     - JPA   
     - Lombok   
+    - Hystrix
+    - caffeine
 - Vue.js   
 - Maven   
 - H2   
@@ -72,3 +74,17 @@ Book Search Service
    ~~~bash
    java -jar target/book-0.0.1-SNAPSHOT.jar book
    ~~~
+
+### Download URL
+- [jar 파일 다운로드](https://drive.google.com/file/d/1ddZxuy9B-nYtHQIFs2FCKU1RjpcLET7I/view?usp=sharing)
+
+
+## API URL
+
+| Mtehod   |Path                              | RequestParam                               | ResponseBody                 |
+|----------|:---------------------------------|:------------------------------------------:|------------------------------|
+| POST     | /api/auth                        | email, password                            | 로그인                         |
+| POST     | /api/user                        | email, password, name                      | 회원가입                       |
+| POST     | /api/search/book                 | query, target                              | 책 검색 / 히스토리, 키워드 저장     |
+| GET      | /api/search/keyword              |                                            | 검색 키워드 TOP 10 조회          |
+| GET      | /api/search/keyword/user         |                                            | 최근 검색 히스토리                |

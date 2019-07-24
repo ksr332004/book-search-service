@@ -19,17 +19,20 @@ import java.util.Arrays;
 public class BookSearchRequest {
 
     @NotNull
-    private String query;              // 검색어
-    private String sort = "accuracy";  // 정렬
+    private String query;                 // 검색어
+    @Builder.Default
+    private String sort = "accuracy";     // 정렬
     @Min(1)
     @Max(100)
-    private Integer page = 1;          // 현재 페이지 번호(start)
+    @Builder.Default
+    private Integer page = 1;             // 현재 페이지 번호(start)
     @Min(10)
     @Max(50)
     @Builder.Default
-    private Integer size = 10;         // 보여지는 문서의 개수(display)
-    private String target;             // 검색 필드
-    private Boolean isButtonEvent;       // 검색 버튼에 의한 이벤트 인지 체크
+    private Integer size = 10;             // 보여지는 문서의 개수(display)
+    private String target;                 // 검색 필드
+    @Builder.Default
+    private Boolean isButtonEvent = false; // 검색 버튼에 의한 이벤트 인지 체크
 
     @Getter
     @AllArgsConstructor
