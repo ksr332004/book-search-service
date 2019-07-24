@@ -2,6 +2,8 @@ package com.search.book.service;
 
 import com.search.book.dto.UserRequest;
 import com.search.book.entity.User;
+import com.search.book.exception.BusinessException;
+import com.search.book.exception.ErrorCode;
 import com.search.book.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +20,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User save(UserRequest userRequest) {
+        userRepository.findByEmail(userRequest.getEmail())
+                .ifPresent(u -> {throw new BusinessException(ErrorCode.EMAIL_DUPLICATION);});
         User user = User.builder()
                 .email(userRequest.getEmail())
                 .password(passwordEncoder.encode(userRequest.getPassword()))

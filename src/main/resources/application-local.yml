@@ -1,5 +1,3 @@
-# TODO : REST 설정, JPA 설정 추가
-
 spring:
   profiles: local
   datasource:
@@ -28,30 +26,34 @@ spring:
 
 hystrix:
   command:
-    productInfo:    # command key. use 'default' for global setting.
+    productInfo:   # command key. use 'default' for global setting.
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 30000  # 3000
+            timeoutInMilliseconds: 5000     # 5sec. / default 1sec.
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 20000         # 20sec. / default 10sec.
       circuitBreaker:
-        requestVolumeThreshold: 5   # Minimum number of request to calculate circuit breaker's health. default 20
-        errorThresholdPercentage: 50 # Error percentage to open circuit. default 50
-
+        requestVolumeThreshold: 5           # Minimum number of request to calculate circuit breaker's health. default 20
+        errorThresholdPercentage: 50        # Error percentage to open circuit. default 50
+        sleepWindowInMilliseconds: 10000    # 10sec. / default 5sec.
 app:
-  token-key: seran.token.key
-  expires-limit: 1800000        # 30 min.
-
-api:
-  kakao:
-    url: https://dapi.kakao.com
-    key: f12b3cac1ec91947b79fe537730e4c21
-  naver:
-    url: https://openapi.naver.com
-    client-id: gmaJIm_hIoSLCLyAvzdp
-    client-secret: XQ7LKJrcR0
+  jwt:
+    token-key: seran.token.key
+    expires-limit: 1800000        # 30 min.
+  api:
+    kakao:
+      url: https://dapi.kakao.com
+      key: f12b3cac1ec91947b79fe537730e4c21
+    naver:
+      url: https://openapi.naver.com
+      client-id: gmaJIm_hIoSLCLyAvzdp
+      client-secret: XQ7LKJrcR0
 
 logging:
   level:
     org.springframework.web: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+

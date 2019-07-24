@@ -12,10 +12,10 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${app.token-key}")
+    @Value("${app.jwt.token-key}")
     private String TOKEN_KEY;
 
-    @Value("${app.expires-limit}")
+    @Value("${app.jwt.expires-limit}")
     private Long EXPIRES_LIMIT;
 
     public String generateToken(Authentication authentication) {

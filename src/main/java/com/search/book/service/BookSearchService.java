@@ -20,19 +20,18 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class BookSearchService {
 
-    @Value("${api.kakao.url}")
+    @Value("${app.api.kakao.url}")
     private String KAKAO_API_URL;
-    @Value("${api.kakao.key}")
+    @Value("${app.api.kakao.key}")
     private String KAKAO_API_KEY;
 
-    @Value("${api.naver.url}")
+    @Value("${app.api.naver.url}")
     private String NAVER_API_URL;
-    @Value("${api.naver.client-id}")
+    @Value("${app.api.naver.client-id}")
     private String NAVER_CLIENT_ID;
-    @Value("${api.naver.client-secret}")
+    @Value("${app.api.naver.client-secret}")
     private String NAVER_CLIENT_SECRET;
 
-    // TODO : Feign으로 변환하기
     private final RestTemplate restTemplate;
 
     @HystrixCommand(commandKey = "getKakaoBookSearchResult", fallbackMethod = "getNaverBookSearchResult")
@@ -42,8 +41,6 @@ public class BookSearchService {
                 , new HttpEntity<>(getHeaders(SearchType.KAKAO))
                 , KakaoBookResponse.class).getBody();
 
-        // TODO : 카카오 API 응답값에 따른 예외 처리
-
         if (Objects.isNull(response)) {
             return ResponseEntity.noContent().build();
         }
@@ -51,15 +48,11 @@ public class BookSearchService {
         return ResponseEntity.ok(BookSearchResponse.kakaoBookResponseMapper(response, request));
     }
 
-    public ResponseEntity<BookSearchResponse> getNaverBookSearchResult(BookSearchRequest request, Throwable t) {
-        log.error("fallback method call !!! getKakaoBookSearchResult {}", t.getMessage());
-
+    public ResponseEntity<BookSearchResponse> getNaverBookSearchResult(BookSearchRequest request) {
         NaverBookResponse response = restTemplate.exchange(request.getNaverUrl(NAVER_API_URL + "/v1/search/book.json")
                 , HttpMethod.GET
                 , new HttpEntity<>(getHeaders(SearchType.NAVER))
                 , NaverBookResponse.class).getBody();
-
-        // TODO : 네이버 API 응답값에 따른 예외 처리
 
         if (Objects.isNull(response)) {
             return ResponseEntity.noContent().build();
