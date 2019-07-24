@@ -42,12 +42,14 @@
 
       <b-row align-h="center">
         <b-col cols="2">
-          <b-button block variant="outline-info" v-if="bookList && bookList.first" @click="onSearch(page--)">이전</b-button>
+          <b-button block variant="outline-info" v-if="bookList && bookList.currentPage > 1 && bookList.totalElements != 0 && bookList.totalElements > bookList.size"
+                    @click="onSearch(page--)">이전</b-button>
         </b-col>
         <b-col cols="8">
         </b-col>
         <b-col cols="2">
-          <b-button block variant="outline-info" v-if="bookList && bookList.last" @click="onSearch(page++)">다음</b-button>
+          <b-button block variant="outline-info" v-if="bookList && (!(bookList.currentPage == bookList.totalPages) && bookList.totalElements > bookList.size)"
+                    @click="onSearch(page++)">다음</b-button>
         </b-col>
       </b-row>
     </b-container>
