@@ -17,6 +17,17 @@
       </b-col>
     </b-row>
 
+    <b-row align-h="center" v-if="message">
+      <b-col cols="6">
+        <b-alert show variant="warning" >{{message}}</b-alert>
+      </b-col>
+    </b-row>
+    <b-row align-h="center" v-if="error">
+      <b-col cols="6">
+        <b-alert show variant="danger" >{{error}}</b-alert>
+      </b-col>
+    </b-row>
+
   </b-container>
 </template>
 
@@ -25,7 +36,9 @@ import {keyword} from '../api'
 export default {
   data() {
     return {
-      keywordList: ''
+      keywordList: '',
+      message: '',
+      error: ''
     }
   },
   created() {
@@ -38,6 +51,7 @@ export default {
           this.keywordList = data
         })
         .catch(err => {
+          this.message = err.data.message
           this.error = err.data.error
         })
     }

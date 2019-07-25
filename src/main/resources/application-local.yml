@@ -30,10 +30,10 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 5000     # 5sec. / default 1sec.
+            timeoutInMilliseconds: 2000     # 2sec. / default 1sec.
       metrics:
         rollingStats:
-          timeInMilliseconds: 20000         # 20sec. / default 10sec.
+          timeInMilliseconds: 10000         # 10sec. / default 10sec.
       circuitBreaker:
         requestVolumeThreshold: 5           # Minimum number of request to calculate circuit breaker's health. default 20
         errorThresholdPercentage: 50        # Error percentage to open circuit. default 50

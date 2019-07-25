@@ -18,9 +18,14 @@
        </b-col>
     </b-row>
 
-    <b-row align-h="center">
+    <b-row align-h="center" v-if="message">
       <b-col cols="6">
-          <p class="error" v-if="error">{{error}}</p>
+        <b-alert show variant="warning" >{{message}}</b-alert>
+      </b-col>
+    </b-row>
+    <b-row align-h="center" v-if="error">
+      <b-col cols="6">
+        <b-alert show variant="danger" >{{error}}</b-alert>
       </b-col>
     </b-row>
 
@@ -36,6 +41,7 @@ export default {
       password: '',
       name: '',
       error: '',
+      message: '',
       rPath: ''
     }
   },
@@ -54,7 +60,8 @@ export default {
           this.$router.push(this.rPath)
         })
         .catch(err => {
-          this.error = err.data.message
+          this.message = err.data.message
+          this.error = err.data.error
         })
     }
   }

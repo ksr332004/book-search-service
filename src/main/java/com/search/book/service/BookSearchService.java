@@ -5,11 +5,14 @@ import com.search.book.dto.BookSearchRequest;
 import com.search.book.dto.BookSearchResponse;
 import com.search.book.dto.KakaoBookResponse;
 import com.search.book.dto.NaverBookResponse;
+import com.search.book.exception.BusinessException;
+import com.search.book.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
@@ -49,16 +52,23 @@ public class BookSearchService {
     }
 
     public ResponseEntity<BookSearchResponse> getNaverBookSearchResult(BookSearchRequest request) {
-        NaverBookResponse response = restTemplate.exchange(request.getNaverUrl(NAVER_API_URL + "/v1/search/book.json")
-                , HttpMethod.GET
-                , new HttpEntity<>(getHeaders(SearchType.NAVER))
-                , NaverBookResponse.class).getBody();
+        NaverBookResponse response;
 
-        if (Objects.isNull(response)) {
-            return ResponseEntity.noContent().build();
+        try {
+            response = restTemplate.exchange(request.getNaverUrl(NAVER_API_URL + "/v1/search/book.json")
+                    , HttpMethod.GET
+                    , new HttpEntity<>(getHeaders(SearchType.NAVER))
+                    , NaverBookResponse.class).getBody();
+        } catch (final HttpClientErrorException e) {
+            log.error("================================================");
+            log.error("Headers: {}", e.getResponseHeaders());
+            log.error("Response Status : {}", e.getStatusCode());
+            log.error("Request body: {}", e.getMessage());
+            log.error("================================================");
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
-        return ResponseEntity.ok(BookSearchResponse.naverResponseMapper(response));
+        return ResponseEntity.ok(BookSearchResponse.naverResponseMapper(Objects.requireNonNull(response)));
     }
 
     private HttpHeaders getHeaders(SearchType searchType) {

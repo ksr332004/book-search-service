@@ -1,5 +1,6 @@
 package com.search.book.security;
 
+import com.search.book.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -16,7 +17,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
         log.error("Responding with unauthorized error. Message - {}", e.getMessage());
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ErrorCode.HANDLE_ACCESS_DENIED.getMessage());
     }
 
 }

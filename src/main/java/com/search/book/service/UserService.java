@@ -26,7 +26,7 @@ public class UserService {
                 .email(userRequest.getEmail())
                 .password(passwordEncoder.encode(userRequest.getPassword()))
                 .name(userRequest.getName())
-                .roles(Stream.of(User.UserRole.USER).collect(Collectors.toSet())) // TODO : 권한에 따라 달라지도록 변환
+                .roles(Stream.of(User.UserRole.USER).collect(Collectors.toSet()))
                 .build();
         return userRepository.save(user);
     }

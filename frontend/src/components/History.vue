@@ -32,6 +32,17 @@
       </b-col>
     </b-row>
 
+    <b-row align-h="center" v-if="message">
+      <b-col cols="6">
+        <b-alert show variant="warning" >{{message}}</b-alert>
+      </b-col>
+    </b-row>
+    <b-row align-h="center" v-if="error">
+      <b-col cols="6">
+        <b-alert show variant="danger" >{{error}}</b-alert>
+      </b-col>
+    </b-row>
+
   </b-container>
 </template>
 
@@ -41,7 +52,9 @@ export default {
   data() {
     return {
       page: 0,
-      historyList: ''
+      historyList: '',
+      message: '',
+      error: ''
     }
   },
   created() {
@@ -54,6 +67,7 @@ export default {
           this.historyList = data
         })
         .catch(err => {
+          this.message = err.data.message
           this.error = err.data.error
         })
     }
