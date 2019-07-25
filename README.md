@@ -76,7 +76,11 @@ Book Search Service
    ~~~
 
 ### Download URL
-- [jar 파일 다운로드](https://drive.google.com/file/d/1ddZxuy9B-nYtHQIFs2FCKU1RjpcLET7I/view?usp=sharing)
+- [jar 파일 다운로드](https://drive.google.com/file/d/1rRnO83Ts42exy9_OdWhrlpTAj5Oo-9hY/view?usp=sharing)
+
+
+### Visit
+- http://localhost:8080/
 
 
 ## API URL
