@@ -40,6 +40,4 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(new AuthResponse(jwt));
     }
 
-    // TODO : 토큰 갱신 추가
-
 }
