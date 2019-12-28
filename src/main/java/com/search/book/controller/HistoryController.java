@@ -6,7 +6,6 @@ import com.search.book.security.CurrentUser;
 import com.search.book.security.UserPrincipal;
 import com.search.book.service.HistoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,7 +25,6 @@ public class HistoryController {
 
     private final HistoryService historyService;
 
-    @Cacheable(cacheNames = "keywordRank")
     @GetMapping
     public ResponseEntity<List<Keyword>> getKeywordRankSearch() {
         return ResponseEntity.status(HttpStatus.OK).body(historyService.getKeywordRank());

@@ -5,6 +5,7 @@ import com.search.book.model.Keyword;
 import com.search.book.repository.HistoryRepository;
 import com.search.book.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ public class HistoryService {
         return historyRepository.findAllByUserId(pageable, currentUser.getId());
     }
 
+    @Cacheable(cacheNames = "keywordRank")
     public List<Keyword> getKeywordRank() {
         return historyRepository.findKeyword10Rank(PageRequest.of(0, 10)).getContent();
     }

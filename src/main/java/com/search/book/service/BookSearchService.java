@@ -1,10 +1,9 @@
 package com.search.book.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.search.book.dto.BookSearchRequest;
-import com.search.book.dto.BookSearchResponse;
-import com.search.book.dto.KakaoBookResponse;
-import com.search.book.dto.NaverBookResponse;
+import com.search.book.dto.BookDTO;
+import com.search.book.dto.KakaoBookDTO;
+import com.search.book.dto.NaverBookDTO;
 import com.search.book.exception.BusinessException;
 import com.search.book.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 @Slf4j
@@ -38,27 +37,27 @@ public class BookSearchService {
     private final RestTemplate restTemplate;
 
     @HystrixCommand(commandKey = "getKakaoBookSearchResult", fallbackMethod = "getNaverBookSearchResult")
-    public ResponseEntity<BookSearchResponse> getKakaoBookSearchResult(BookSearchRequest request) {
-        KakaoBookResponse response = restTemplate.exchange(request.getKakaoUrl(KAKAO_API_URL + "/v3/search/book")
+    public ResponseEntity<BookDTO.Res> getKakaoBookSearchResult(BookDTO.Req req) {
+        KakaoBookDTO.Res kakaoBookRes = restTemplate.exchange(req.getKakaoUrl(KAKAO_API_URL + "/v3/search/book")
                 , HttpMethod.GET
                 , new HttpEntity<>(getHeaders(SearchType.KAKAO))
-                , KakaoBookResponse.class).getBody();
+                , KakaoBookDTO.Res.class).getBody();
 
-        if (Objects.isNull(response)) {
+        if (Objects.isNull(kakaoBookRes)) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(BookSearchResponse.kakaoBookResponseMapper(response, request));
+        return ResponseEntity.ok(BookDTO.Res.kakaoBookResponseMapper(kakaoBookRes, req));
     }
 
-    public ResponseEntity<BookSearchResponse> getNaverBookSearchResult(BookSearchRequest request) {
-        NaverBookResponse response;
+    public ResponseEntity<BookDTO.Res> getNaverBookSearchResult(BookDTO.Req req) {
+        NaverBookDTO.Res naverBookRes;
 
         try {
-            response = restTemplate.exchange(request.getNaverUrl(NAVER_API_URL + "/v1/search/book.json")
+            naverBookRes = restTemplate.exchange(req.getNaverUrl(NAVER_API_URL + "/v1/search/book.json")
                     , HttpMethod.GET
                     , new HttpEntity<>(getHeaders(SearchType.NAVER))
-                    , NaverBookResponse.class).getBody();
+                    , NaverBookDTO.Res.class).getBody();
         } catch (final HttpClientErrorException e) {
             log.error("================================================");
             log.error("Headers: {}", e.getResponseHeaders());
@@ -68,12 +67,12 @@ public class BookSearchService {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
-        return ResponseEntity.ok(BookSearchResponse.naverResponseMapper(Objects.requireNonNull(response)));
+        return ResponseEntity.ok(BookDTO.Res.naverResponseMapper(Objects.requireNonNull(naverBookRes)));
     }
 
     private HttpHeaders getHeaders(SearchType searchType) {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         if (searchType.equals(SearchType.KAKAO)) {
             httpHeaders.add("Authorization", "KakaoAK " + KAKAO_API_KEY);
         } else {

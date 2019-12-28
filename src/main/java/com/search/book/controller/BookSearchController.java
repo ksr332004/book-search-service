@@ -1,7 +1,6 @@
 package com.search.book.controller;
 
-import com.search.book.dto.BookSearchRequest;
-import com.search.book.dto.BookSearchResponse;
+import com.search.book.dto.BookDTO;
 import com.search.book.security.CurrentUser;
 import com.search.book.security.UserPrincipal;
 import com.search.book.service.BookSearchService;
@@ -27,14 +26,14 @@ public class BookSearchController {
 
 
     @PostMapping
-    public ResponseEntity<BookSearchResponse> getBookSearch(@CurrentUser UserPrincipal currentUser, @Valid @RequestBody BookSearchRequest request) {
-        BookSearchResponse response = bookSearchService.getKakaoBookSearchResult(request).getBody();
+    public ResponseEntity<BookDTO.Res> getBookSearch(@CurrentUser UserPrincipal currentUser, @Valid @RequestBody BookDTO.Req req) {
+        BookDTO.Res res = bookSearchService.getKakaoBookSearchResult(req).getBody();
 
-        if (request.getIsButtonEvent() && Objects.requireNonNull(response).getTotalElements() > 0) {
-            historyService.saveUserHistory(currentUser, request.getQuery());
+        if (req.getIsButtonEvent() && Objects.requireNonNull(res).getTotalElements() > 0) {
+            historyService.saveUserHistory(currentUser, req.getQuery());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
 }

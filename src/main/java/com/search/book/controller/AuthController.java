@@ -1,7 +1,6 @@
 package com.search.book.controller;
 
-import com.search.book.dto.AuthRequest;
-import com.search.book.dto.AuthResponse;
+import com.search.book.dto.AuthDTO;
 import com.search.book.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,18 +25,19 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping
-    public ResponseEntity<AuthResponse> authorize(@Valid @RequestBody AuthRequest authRequest) {
-        Authentication authentication = authenticationManager.authenticate(
+    public ResponseEntity<AuthDTO.Res> authorize(@Valid @RequestBody AuthDTO.Req req) {
+        final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authRequest.getEmail(),
-                        authRequest.getPassword()
+                        req.getEmail(),
+                        req.getPassword()
                 )
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = jwtTokenProvider.generateToken(authentication);
-        return ResponseEntity.status(HttpStatus.OK).body(new AuthResponse(jwt));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new AuthDTO.Res(jwtTokenProvider.generateToken(authentication)));
     }
 
 }

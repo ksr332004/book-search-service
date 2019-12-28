@@ -1,6 +1,6 @@
 package com.search.book.controller;
 
-import com.search.book.dto.UserRequest;
+import com.search.book.dto.UserDTO;
 import com.search.book.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +20,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<Void> registerUser(@Valid @RequestBody UserRequest userRequest) {
-        userService.save(userRequest);
+    public ResponseEntity<Void> registerUser(@Valid @RequestBody UserDTO.Res res) {
+        userService.save(res);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 

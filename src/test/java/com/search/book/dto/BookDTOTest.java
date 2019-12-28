@@ -5,8 +5,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = {BookSearchRequest.class})
-public class BookSearchRequestTest {
+@SpringBootTest(classes = {BookDTO.Req.class})
+public class BookDTOTest {
 
     @Test
     public void 네이버_URI_생성_테스트() {
@@ -14,7 +14,7 @@ public class BookSearchRequestTest {
         String query = "테스트";
         String sort = "accuracy";
         int size = 10;
-        BookSearchRequest request = BookSearchRequest.builder()
+        BookDTO.Req request = BookDTO.Req.builder()
                 .query(query)
                 .sort(sort)
                 .size(size)
